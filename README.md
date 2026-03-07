@@ -4,7 +4,7 @@
 ![AI Badge](https://img.shields.io/badge/API-AI_Integration-green)
 
 This is a project I built to practice working with React and AI integrations. I learned how to manage complex state, use refs for DOM manipulation, and fetch AI-generated content based on user input.
-
+*[link here](https://chef-craft.netlify.app/)*
 ## Index
 
 - [About](#about)
