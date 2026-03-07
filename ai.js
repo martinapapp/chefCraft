@@ -1,26 +1,18 @@
-import { InferenceClient } from '@huggingface/inference'
-
-const SYSTEM_PROMPT = `
-You are an assistant that receives a list of ingredients and suggests a recipe. 
-Format your response in markdown.
-`
-
-const hf = new InferenceClient(import.meta.env.VITE_HF_ACCESS_TOKEN)
+const BASE_URL = import.meta.env.DEV ? "http://localhost:3001" : ""
 
 export async function getRecipeFromMistral(ingredientsArr) {
     const ingredientsString = ingredientsArr.join(", ")
+    console.log("Fetching from:", `${BASE_URL}/api/recipe`)
     try {
-        const response = await hf.chatCompletion({
-            model: "meta-llama/Llama-3.2-3B-Instruct",
-            messages: [
-                { role: "system", content: SYSTEM_PROMPT },
-                { role: "user", content: `I have ${ingredientsString}. Please give me a recipe!` },
-            ],
-            max_tokens: 1024,
+        const res = await fetch(`${BASE_URL}/api/recipe`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ingredients: ingredientsString }),
         })
-        return response.choices[0].message.content
+        const data = await res.json()
+        return data.recipe
     } catch (err) {
-        console.error("HuggingFace API Error:", err.message)
+        console.error("API Error:", err.message)
         return "The AI service is currently unavailable. Please try again later."
     }
 }

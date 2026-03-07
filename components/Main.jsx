@@ -15,6 +15,7 @@ export default function Main() {
     }, [recipe])
 
     async function getRecipe() {
+        console.log("getRecipe called!")
         const recipeMarkdown = await getRecipeFromMistral(ingredients)
         setRecipe(recipeMarkdown)
     }
